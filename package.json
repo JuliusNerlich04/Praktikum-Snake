@@ -1,0 +1,28 @@
+{
+  "name": "praktikumsprojekt-julius",
+  "version": "1.0.0",
+  "description": "Snake",
+  "repository": {
+    "type": "git",
+    "url": "git@ssh.gitlab.finatix.de:j.nerlich/praktikumsprojekt-julius.git"
+  },
+  "license": "ISC",
+  "author": "Julius Nerlich",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "vite": "^7.3.0"
+  }
+}
