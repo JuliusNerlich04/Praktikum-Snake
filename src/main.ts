@@ -3,7 +3,8 @@ import "./styles/main.css";
 import {mountLayout} from "./ui/layout";
 import {renderGameView} from "./ui/gameView";
 import {renderLeaderboardView} from "./ui/leaderboardView";
-import {createKonvaRenderer, type KonvaRenderer, type RenderState} from "./game/rendererKonva";
+import {createKonvaRenderer, type KonvaRenderer} from "./game/rendererKonva";
+import {getTestState, type GameState} from "./game/state";
 
 type ViewName = "game" | "leaderboard";
 
@@ -13,7 +14,7 @@ if (!root) throw new Error("#app not found");
 //Layout mounten
 const ui = mountLayout(root);
 
-let renderer: KonvaRenderer<RenderState> | null = null;
+let renderer: KonvaRenderer<GameState> | null = null;
 
 function cleanupCurrentView() {
     if (renderer) {
@@ -35,8 +36,10 @@ function showView(view: ViewName) {
         const gameUI = renderGameView(ui.viewRoot);
 
         //Konva initialisieren
-        renderer = createKonvaRenderer<RenderState>(gameUI.gameContainer);
-        renderer.draw({ gridSize: 20 });
+        renderer = createKonvaRenderer<GameState>(gameUI.gameContainer);
+        const state = getTestState();
+        renderer.drawGrid(state);
+        renderer.draw(state);
 
         return;
     }
