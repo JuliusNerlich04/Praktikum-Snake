@@ -4,6 +4,7 @@ export type GameViewUI = {
     gameContainer: HTMLDivElement;
     scoreEl: HTMLSpanElement;
     startButton: HTMLButtonElement;
+    pauseButton: HTMLButtonElement;
 }
 
 export function renderGameView(container : HTMLElement) {
@@ -18,6 +19,7 @@ export function renderGameView(container : HTMLElement) {
             <aside>
               <div>Score: <span id="hud-score">0</span></div>
               <button id="btn-start">Start</button>
+              <button id="btn-pause">Start</button>
             </aside>
           </main>
         </div>
@@ -25,10 +27,11 @@ export function renderGameView(container : HTMLElement) {
     const gameContainer = container.querySelector<HTMLDivElement>("#game-container");
     const scoreEl = container.querySelector<HTMLSpanElement>("#hud-score");
     const startButton = container.querySelector<HTMLButtonElement>("#btn-start");
+    const pauseButton = container.querySelector<HTMLButtonElement>("#btn-pause");
 
-    if (!gameContainer || !scoreEl || !startButton) {
+    if (!gameContainer || !scoreEl || !startButton || !pauseButton) {
         throw new Error("Layout element not found");
     }
-    return { gameContainer, scoreEl, startButton,}
+    return { gameContainer, scoreEl, startButton, pauseButton };
 
 }
