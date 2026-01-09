@@ -37,7 +37,7 @@ export function createKonvaRenderer<State extends GameState>(
     stage.add(entityLayer);
     let gridReady = false;
 
-    function drawGrid(state: GameState) {
+    function drawGrid(state: State) {
         gridLayer.destroyChildren(); // entfernt alle Shapes aus dem Layer
 
 
@@ -77,7 +77,7 @@ export function createKonvaRenderer<State extends GameState>(
 
 
 
-    function draw(state: GameState) {
+    function draw(state: State) {
 
         if (!gridReady) {
             throw new Error("Grid is not Ready");
