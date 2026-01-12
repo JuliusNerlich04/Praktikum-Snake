@@ -1,7 +1,7 @@
 import "./styles/main.css";
 
 import {mountLayout} from "./ui/layout";
-import {renderGameView} from "./ui/gameView";
+import {type GameViewUI, renderGameView} from "./ui/gameView";
 import {renderLeaderboardView} from "./ui/leaderboardView";
 import {createKonvaRenderer, type KonvaRenderer} from "./game/rendererKonva";
 import {getTestState, initGameState, type GameState} from "./game/state";
@@ -17,17 +17,85 @@ const ui = mountLayout(root);
 
 let gameState: GameState | null = null;
 let gameInterval: number | null = null;
+let isPaused = false;
+let isRunning = false;
 let renderer: KonvaRenderer<GameState> | null = null;
 
-function cleanupCurrentView() {
+const TICK_MS = 150;
+
+function startLoop() {
+    if (gameInterval !== null) return;
+    if (!gameState || !renderer) return;
+
+    gameInterval = window.setInterval(() => {
+        if (!gameState || !renderer) return;
+        gameState = tick(gameState);
+        renderer.draw(gameState);
+    }, TICK_MS);
+}
+
+function stopLoop() {
     if (gameInterval !== null) {
         clearInterval(gameInterval);
         gameInterval = null;
     }
+}
+
+function startGame(gameUI: GameViewUI) {
+    stopLoop();
+
+    gameState = initGameState();
+
+    renderer?.destroy();
+    renderer = createKonvaRenderer<GameState>(gameUI.gameContainer);
+
+    renderer.drawGrid(gameState);
+    renderer.draw(gameState);
+
+    isPaused = false;
+    isRunning = true;
+
+    startLoop();
+    updateControls(gameUI);
+}
+
+function pauseGame(gameUI: GameViewUI) {
+    if (!isRunning) return;
+
+    stopLoop();
+    isPaused = true;
+    isRunning = false;
+
+    updateControls(gameUI);
+}
+
+function resumeGame(gameUI: GameViewUI) {
+    if (!isPaused || !gameState || !renderer) return;
+
+    isPaused = false;
+    isRunning = true;
+
+    startLoop();
+    updateControls(gameUI);
+}
+
+function updateControls(gameUI: GameViewUI) {
+    gameUI.startButton.disabled = isRunning;
+
+    gameUI.pauseButton.disabled = !isPaused && !isRunning;
+    gameUI.pauseButton.textContent = isPaused ? "Resume" : "Pause";
+
+}
+function cleanupCurrentView() {
+    stopLoop();
+
 
     renderer?.destroy();
     renderer = null;
+
     gameState = null;
+    isRunning = false;
+    isPaused = false;
 }
 
 //zentrale View-Wechselfunktion
@@ -41,21 +109,16 @@ function showView(view: ViewName) {
     //Neue View rendern
     if (view === "game") {
         const gameUI = renderGameView(ui.viewRoot);
-        gameUI.startButton.addEventListener("click", () => {
-            if (gameInterval !== null) return;
 
-            gameState = initGameState();
+        updateControls(gameUI);
 
-            renderer = createKonvaRenderer<GameState>(gameUI.gameContainer);
-            renderer.drawGrid(gameState);
-            renderer.draw(gameState);
 
-            gameInterval = window.setInterval(() => {
-                if (!gameState || !renderer) return;
-
-                gameState = tick(gameState);
-                renderer.draw(gameState);
-            }, 150)
+        gameUI.startButton.addEventListener("click", () =>
+            startGame(gameUI)
+        );
+        gameUI.pauseButton.addEventListener("click", () => {
+            if (isRunning) pauseGame(gameUI);
+            else resumeGame(gameUI)
         })
 
         //Konva initialisieren
