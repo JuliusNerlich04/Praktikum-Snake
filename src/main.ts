@@ -4,7 +4,7 @@ import {mountLayout} from "./ui/layout";
 import {type GameViewUI, renderGameView} from "./ui/gameView";
 import {renderLeaderboardView} from "./ui/leaderboardView";
 import {createKonvaRenderer, type KonvaRenderer} from "./game/rendererKonva";
-import {getTestState, initGameState, type GameState} from "./game/state";
+import {getTestState, initGameState, type GameState, type Direction} from "./game/state";
 import {tick} from "./game/engine";
 
 type ViewName = "game" | "leaderboard";
@@ -88,7 +88,6 @@ function updateControls(gameUI: GameViewUI) {
 }
 function cleanupCurrentView() {
     stopLoop();
-
 
     renderer?.destroy();
     renderer = null;
