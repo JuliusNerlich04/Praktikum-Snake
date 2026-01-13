@@ -7,6 +7,7 @@ export type GameState = {
     gridSize: number;
     snake: Point[];
     direction: Direction;
+    pendingDirection?: Direction;
     food: Point;
 };
 
