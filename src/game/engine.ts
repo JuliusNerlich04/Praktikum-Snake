@@ -1,5 +1,6 @@
 import type {Direction, GameState, Point} from "./state"
 
+//Snake movement helper Functions
 function isOpposite (a: Direction, b: Direction): boolean {
     return (
         (a === "up" && b === "down") ||
@@ -36,8 +37,22 @@ function nextHead (head: {x: number, y:number}, dir: Direction) {
             };
     }
 }
+//Food spawn helper Functions
+function pointsEqual (a: Point, b: Point): boolean {
+    return a.x === b.x && a.y === b.y;
+}
+
+function isPointOnSnake (point:Point, snake:Point[] ): boolean {
+    return (
+        snake.some(
+            p => pointsEqual(p, point)
+        )
+    );
+}
 
 export function tick (state: GameState): GameState{
+
+    //pointsEqual(food, snake[i])
 
     const desired = state.pendingDirection;
     const direction =
