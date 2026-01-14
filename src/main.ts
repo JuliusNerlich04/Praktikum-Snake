@@ -4,8 +4,9 @@ import {mountLayout} from "./ui/layout";
 import {type GameViewUI, renderGameView} from "./ui/gameView";
 import {renderLeaderboardView} from "./ui/leaderboardView";
 import {createKonvaRenderer, type KonvaRenderer} from "./game/rendererKonva";
-import {getTestState, initGameState, type GameState, type Direction} from "./game/state";
+import {getTestState, initGameState, type GameState} from "./game/state";
 import {tick} from "./game/engine";
+import {attachKeyboardControls} from "./game/input";
 
 type ViewName = "game" | "leaderboard";
 
@@ -20,6 +21,7 @@ let gameInterval: number | null = null;
 let isPaused = false;
 let isRunning = false;
 let renderer: KonvaRenderer<GameState> | null = null;
+let detachKeyboard: null | (() => void);
 
 const TICK_MS = 150;
 
@@ -29,6 +31,7 @@ function startLoop() {
 
     gameInterval = window.setInterval(() => {
         if (!gameState || !renderer) return;
+
         gameState = tick(gameState);
         renderer.draw(gameState);
     }, TICK_MS);
@@ -36,7 +39,7 @@ function startLoop() {
 
 function stopLoop() {
     if (gameInterval !== null) {
-        clearInterval(gameInterval);
+        window.clearInterval(gameInterval);
         gameInterval = null;
     }
 }
@@ -51,6 +54,12 @@ function startGame(gameUI: GameViewUI) {
 
     renderer.drawGrid(gameState);
     renderer.draw(gameState);
+
+    detachKeyboard = attachKeyboardControls((dir) => {
+        if (!gameState) return;
+        console.log("onDirection received: " + dir);
+        gameState = { ...gameState, pendingDirection: dir };
+    });
 
     isPaused = false;
     isRunning = true;
@@ -89,6 +98,11 @@ function updateControls(gameUI: GameViewUI) {
 function cleanupCurrentView() {
     stopLoop();
 
+    if (detachKeyboard) {
+        detachKeyboard();
+        detachKeyboard = null;
+    }
+
     renderer?.destroy();
     renderer = null;
 
@@ -122,7 +136,7 @@ function showView(view: ViewName) {
 
         //Konva initialisieren
         renderer = createKonvaRenderer<GameState>(gameUI.gameContainer);
-        const state = getTestState();
+        const state = initGameState();
         renderer.drawGrid(state);
         renderer.draw(state);
 

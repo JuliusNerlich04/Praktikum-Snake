@@ -1,12 +1,11 @@
 import type {Direction, GameState, Point} from "./state"
-import {createKonvaRenderer} from "./rendererKonva";
 
 function isOpposite (a: Direction, b: Direction): boolean {
     return (
-        (a === "up" || b === "down") ||
-        (a === "down" || b === "up") ||
-        (a === "left" || b === "right") ||
-        (a === "right" || b === "left")
+        (a === "up" && b === "down") ||
+        (a === "down" && b === "up") ||
+        (a === "left" && b === "right") ||
+        (a === "right" && b === "left")
     );
 }
 
@@ -39,10 +38,13 @@ function nextHead (head: {x: number, y:number}, dir: Direction) {
 }
 
 export function tick (state: GameState): GameState{
+
     const desired = state.pendingDirection;
     const direction =
         desired && !isOpposite(desired, state.direction) ? desired : state.direction;
-
+    /*console.log("tick pending: " + state.pendingDirection + " dir: " + state.direction +
+    "isOpposite: " + desired ? isOpposite(desired, state.direction) : null);
+    */
     const head = state.snake[0];
     const newHead = nextHead(head, direction);
     const newSnake = [
