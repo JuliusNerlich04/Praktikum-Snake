@@ -23,7 +23,7 @@ let isRunning = false;
 let renderer: KonvaRenderer<GameState> | null = null;
 let detachKeyboard: null | (() => void);
 
-const TICK_MS = 150;
+const TICK_MS = 120;
 
 function startLoop() {
     if (gameInterval !== null) return;
