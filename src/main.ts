@@ -4,7 +4,7 @@ import {mountLayout} from "./ui/layout";
 import {type GameViewUI, renderGameView} from "./ui/gameView";
 import {renderLeaderboardView} from "./ui/leaderboardView";
 import {createKonvaRenderer, type KonvaRenderer} from "./game/rendererKonva";
-import {getTestState, initGameState, type GameState} from "./game/state";
+import {initGameState, type GameState} from "./game/state";
 import {tick} from "./game/engine";
 import {attachKeyboardControls} from "./game/input";
 
@@ -22,8 +22,9 @@ let isPaused = false;
 let isRunning = false;
 let renderer: KonvaRenderer<GameState> | null = null;
 let detachKeyboard: null | (() => void);
+let currentGameUI: GameViewUI | null = null;
 
-const TICK_MS = 120;
+const TICK_MS = 20;
 
 function startLoop() {
     if (gameInterval !== null) return;
@@ -34,6 +35,8 @@ function startLoop() {
 
         gameState = tick(gameState);
         renderer.draw(gameState);
+
+        if (currentGameUI) updateControls(currentGameUI);
     }, TICK_MS);
 }
 
@@ -46,6 +49,11 @@ function stopLoop() {
 
 function startGame(gameUI: GameViewUI) {
     stopLoop();
+
+    if (detachKeyboard) {
+        detachKeyboard();
+        detachKeyboard = null;
+    }
 
     gameState = initGameState();
 
@@ -93,9 +101,14 @@ function updateControls(gameUI: GameViewUI) {
     gameUI.pauseButton.disabled = !isPaused && !isRunning;
     gameUI.pauseButton.textContent = isPaused ? "Resume" : "Pause";
 
+    const score = gameState?.score ?? 0;
+    gameUI.scoreEl.textContent = String(score);
+
 }
 function cleanupCurrentView() {
     stopLoop();
+
+    currentGameUI = null;
 
     if (detachKeyboard) {
         detachKeyboard();
@@ -108,6 +121,8 @@ function cleanupCurrentView() {
     gameState = null;
     isRunning = false;
     isPaused = false;
+
+    currentGameUI = null;
 }
 
 //zentrale View-Wechselfunktion
@@ -121,6 +136,7 @@ function showView(view: ViewName) {
     //Neue View rendern
     if (view === "game") {
         const gameUI = renderGameView(ui.viewRoot);
+        currentGameUI = gameUI;
 
         updateControls(gameUI);
 
@@ -135,9 +151,9 @@ function showView(view: ViewName) {
 
         //Konva initialisieren
         renderer = createKonvaRenderer<GameState>(gameUI.gameContainer);
-        const state = initGameState();
-        renderer.drawGrid(state);
-        renderer.draw(state);
+        gameState = initGameState();
+        renderer.drawGrid(gameState);
+        renderer.draw(gameState);
 
         return;
     }
