@@ -57,7 +57,6 @@ function startGame(gameUI: GameViewUI) {
 
     detachKeyboard = attachKeyboardControls((dir) => {
         if (!gameState) return;
-        console.log("onDirection received: " + dir);
         gameState = { ...gameState, pendingDirection: dir };
     });
 

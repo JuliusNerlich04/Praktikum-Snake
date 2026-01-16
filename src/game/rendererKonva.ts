@@ -81,7 +81,7 @@ export function createKonvaRenderer<State extends GameState>(
 
         if (!gridReady) {
             throw new Error("Grid is not Ready");
-        }else {console.log("Grid is ready");}
+        }
 
         entityLayer.destroyChildren();
 
