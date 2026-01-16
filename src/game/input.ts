@@ -1,12 +1,9 @@
 import type {Direction} from "./state"
-console.log("input loaded")
 
 export function attachKeyboardControls(
     onDirection: (dir: Direction) => void
 )  {
     function handleKeyDown(e: KeyboardEvent) {
-        console.log("key down: " + e.key)
-
         const key = e.key.toLowerCase();
 
         if (key.startsWith("arrow")) e.preventDefault();
@@ -40,8 +37,6 @@ export function attachKeyboardControls(
         }
 
         onDirection(direction);
-        console.log("pending direction: " + direction);
-
     }
 
     window.addEventListener("keydown", handleKeyDown, { passive: false });
