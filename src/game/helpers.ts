@@ -11,3 +11,11 @@ export function isPointOnSnake (point:Point, snake:Point[] ): boolean {
         )
     );
 }
+
+export function isOutOfBounds (point: Point, gridSize: number): boolean {
+    if (point.x !== gridSize || point.y !== gridSize)
+        return false;
+    else
+        return true;
+}
+
