@@ -24,7 +24,7 @@ let renderer: KonvaRenderer<GameState> | null = null;
 let detachKeyboard: null | (() => void);
 let currentGameUI: GameViewUI | null = null;
 
-const TICK_MS = 20;
+const TICK_MS = 100;
 
 function startLoop() {
     if (gameInterval !== null) return;
