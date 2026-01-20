@@ -10,6 +10,7 @@ export type GameState = {
     pendingDirection?: Direction;
     food: Point;
     score: number;
+    isGameOver: boolean;
 };
 
 export function getTestState(): GameState {
@@ -23,6 +24,7 @@ export function getTestState(): GameState {
         direction: "right",
         food: {x: 5, y: 5},
         score: 0,
+        isGameOver: false,
     }
 }
 
@@ -37,5 +39,6 @@ export function initGameState(): GameState {
         direction: "right",
         food: {x: 5, y: 5},
         score: 0,
+        isGameOver: false,
     }
 }
