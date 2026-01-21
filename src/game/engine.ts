@@ -1,6 +1,7 @@
-import type {Direction, GameState, Point} from "./state"
+import type {Direction, GameState} from "./state"
 import {spawnFood} from "./food";
 import {pointsEqual} from "./helpers";
+import {checkCollision} from "./collision";
 
 //Snake movement helper Functions
 function isOpposite (a: Direction, b: Direction): boolean {
@@ -42,14 +43,29 @@ function nextHead (head: {x: number, y:number}, dir: Direction) {
 
 export function tick (state: GameState): GameState{
 
-    //pointsEqual(food, snake[i])
+    if (state.isGameOver) return state;
 
     const desired = state.pendingDirection;
     const direction =
         desired && !isOpposite(desired, state.direction) ? desired : state.direction;
     const head = state.snake[0];
     const newHead = nextHead(head, direction);
-    if (pointsEqual(newHead, state.food)) {
+    const willEat = pointsEqual(newHead, state.food);
+
+    const bodyToCheck = willEat
+        ? state.snake
+        : state.snake.slice(0, -1);
+
+
+    if (checkCollision(newHead, bodyToCheck, state.gridSize)) {
+        return {
+            ...state,
+            isGameOver: true,
+            pendingDirection: undefined,
+        }
+    }
+
+    if (willEat) {
         const newSnake = [
             newHead,
             ...state.snake,
