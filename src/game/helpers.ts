@@ -13,9 +13,9 @@ export function isPointOnSnake (point:Point, snake:Point[] ): boolean {
 }
 
 export function isOutOfBounds (point: Point, gridSize: number): boolean {
-    if (point.x !== gridSize || point.y !== gridSize)
-        return false;
-    else
+    if (point.x >= gridSize || point.y >= gridSize || point.x < 0 || point.y < 0)
         return true;
+    else
+        return false;
 }
 

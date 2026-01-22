@@ -24,16 +24,33 @@ let renderer: KonvaRenderer<GameState> | null = null;
 let detachKeyboard: null | (() => void);
 let currentGameUI: GameViewUI | null = null;
 
-const TICK_MS = 100;
+const TICK_MS = 150;
 
 function startLoop() {
+    console.log("Starting Loop, interval" + TICK_MS + "has State" + gameState + "hasRenderer" + renderer);
+
     if (gameInterval !== null) return;
+
     if (!gameState || !renderer) return;
+
 
     gameInterval = window.setInterval(() => {
         if (!gameState || !renderer) return;
 
         gameState = tick(gameState);
+        console.log("tick happened");
+        if (gameState.isGameOver) {
+            console.log("isGameOver");
+            stopLoop();
+            if (detachKeyboard) {
+                detachKeyboard();
+                detachKeyboard = null;
+            }
+            isRunning = false;
+            isPaused = true;
+            if (currentGameUI) updateControls(currentGameUI);
+            return;
+        }
         renderer.draw(gameState);
 
         if (currentGameUI) updateControls(currentGameUI);
@@ -58,7 +75,7 @@ function startGame(gameUI: GameViewUI) {
     gameState = initGameState();
 
     renderer?.destroy();
-    renderer = createKonvaRenderer<GameState>(gameUI.gameContainer);
+    renderer = createKonvaRenderer<GameState>(gameUI.konvaMount);
 
     renderer.drawGrid(gameState);
     renderer.draw(gameState);
@@ -96,10 +113,21 @@ function resumeGame(gameUI: GameViewUI) {
 }
 
 function updateControls(gameUI: GameViewUI) {
-    gameUI.startButton.disabled = isRunning;
-
-    gameUI.pauseButton.disabled = !isPaused && !isRunning;
-    gameUI.pauseButton.textContent = isPaused ? "Resume" : "Pause";
+    console.log("update controls");
+    if (gameState?.isGameOver === true){
+        gameUI.pauseButton.classList.add("hidden");
+        gameUI.startButton.textContent = "Restart";
+        gameUI.startButton.disabled = false;
+        gameUI.gameOverContainer.classList.remove("hidden");
+        console.log("Game Over");
+    } else {
+        gameUI.pauseButton.classList.remove("hidden");
+        gameUI.gameOverContainer.classList.add("hidden");
+        gameUI.startButton.textContent = "Start";
+        gameUI.startButton.disabled = isRunning;
+        gameUI.pauseButton.textContent = isPaused ? "Resume" : "Pause";
+        console.log("Game not Over");
+    }
 
     const score = gameState?.score ?? 0;
     gameUI.scoreEl.textContent = String(score);
@@ -137,9 +165,16 @@ function showView(view: ViewName) {
     if (view === "game") {
         const gameUI = renderGameView(ui.viewRoot);
         currentGameUI = gameUI;
+        console.log("game Container exists", gameUI.konvaMount);
 
-        updateControls(gameUI);
+        gameState = initGameState();
 
+        renderer?.destroy();
+        renderer = createKonvaRenderer<GameState>(gameUI.konvaMount);
+        console.log("renderer Created");
+        renderer.drawGrid(gameState);
+        renderer.draw(gameState);
+        console.log("draw game");
 
         gameUI.startButton.addEventListener("click", () =>
             startGame(gameUI)
@@ -149,11 +184,7 @@ function showView(view: ViewName) {
             else resumeGame(gameUI)
         })
 
-        //Konva initialisieren
-        renderer = createKonvaRenderer<GameState>(gameUI.gameContainer);
-        gameState = initGameState();
-        renderer.drawGrid(gameState);
-        renderer.draw(gameState);
+        updateControls(gameUI);
 
         return;
     }
