@@ -78,7 +78,7 @@ export function createKonvaRenderer<State extends GameState>(
 
 
     function draw(state: State) {
-
+        console.log(state.snake[0])
         if (!gridReady) {
             throw new Error("Grid is not Ready");
         }
