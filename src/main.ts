@@ -24,8 +24,21 @@ let isRunning = false;
 let renderer: KonvaRenderer<GameState> | null = null;
 let detachKeyboard: null | (() => void);
 let currentGameUI: GameViewUI | null = null;
+let playerName: string | null = null;
 
 const TICK_MS = 150;
+
+async function handleStartClick(gameUI: GameViewUI) {
+    if (playerName === null) {
+        const result = await openNameModal({ maxLen: 16, title: "User Name: "});
+        if (result === null) {
+            return
+        } else {
+            playerName = result;
+        }
+    }
+    startGame(gameUI);
+}
 
 function startLoop() {
     console.log("Starting Loop, interval" + TICK_MS + "has State" + gameState + "hasRenderer" + renderer);
@@ -177,9 +190,9 @@ function showView(view: ViewName) {
         renderer.draw(gameState);
         console.log("draw game");
 
-        gameUI.startButton.addEventListener("click", () =>
-            startGame(gameUI)
-        );
+        gameUI.startButton.addEventListener("click", () => {
+                void handleStartClick(gameUI);
+            });
         gameUI.pauseButton.addEventListener("click", () => {
             if (isRunning) pauseGame(gameUI);
             else resumeGame(gameUI)
@@ -192,7 +205,6 @@ function showView(view: ViewName) {
 
     if (view === "leaderboard") {
         renderLeaderboardView(ui.viewRoot);
-        openNameModal(DEFAULT_OPTIONS).then((result) => console.log(result));
         return;
     }
 }
