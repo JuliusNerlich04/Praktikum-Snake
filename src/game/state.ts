@@ -38,7 +38,7 @@ export function initGameState(): GameState {
         ],
         direction: "right",
         food: {x: 5, y: 5},
-        score: 0,
+        score: 3,
         isGameOver: false,
     }
 }

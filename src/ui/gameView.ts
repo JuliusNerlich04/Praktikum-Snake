@@ -2,6 +2,7 @@ export type GameViewUI = {
     gameContainer: HTMLDivElement;
     konvaMount: HTMLDivElement;
     gameOverContainer: HTMLDivElement;
+    playerEl: HTMLSpanElement;
     scoreEl: HTMLSpanElement;
     startButton: HTMLButtonElement;
     pauseButton: HTMLButtonElement;
@@ -23,9 +24,10 @@ export function renderGameView(container : HTMLElement) {
                 </div>
             </div>
             <aside>
-              <div>Score: <span id="hud-score">0</span></div>
-              <button id="btn-start">Start</button>
-              <button id="btn-pause">Pause</button>
+                <div>Player: <span id="hud-name"></span></div>  
+                <div>Score: <span id="hud-score">0</span></div>
+                <button id="btn-start">Start</button>
+                <button id="btn-pause">Pause</button>
             </aside>
           </main>
         </div>
@@ -36,10 +38,11 @@ export function renderGameView(container : HTMLElement) {
     const pauseButton = container.querySelector<HTMLButtonElement>("#btn-pause");
     const gameOverContainer = container.querySelector<HTMLDivElement>("#game-over-container");
     const konvaMount = container.querySelector<HTMLDivElement>("#konva-mount");
+    const playerEl = container.querySelector<HTMLSpanElement>("#hud-name");
 
-    if (!gameContainer || !scoreEl || !startButton || !pauseButton || !gameOverContainer || !konvaMount) {
+    if (!gameContainer || !scoreEl || !startButton || !pauseButton || !gameOverContainer || !konvaMount || !playerEl) {
         throw new Error("Layout element not found");
     }
-    return { gameContainer, scoreEl, startButton, pauseButton, gameOverContainer, konvaMount };
+    return { gameContainer, scoreEl, startButton, pauseButton, gameOverContainer, konvaMount, playerEl };
 
 }
