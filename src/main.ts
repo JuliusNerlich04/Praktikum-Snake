@@ -145,6 +145,7 @@ function updateControls(gameUI: GameViewUI) {
 
     const score = gameState?.score ?? 0;
     gameUI.scoreEl.textContent = String(score);
+    gameUI.playerEl.textContent = playerName ?? "-";
 
 }
 function cleanupCurrentView() {
