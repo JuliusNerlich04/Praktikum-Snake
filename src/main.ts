@@ -7,6 +7,7 @@ import {createKonvaRenderer, type KonvaRenderer} from "./game/rendererKonva";
 import {initGameState, type GameState} from "./game/state";
 import {tick} from "./game/engine";
 import {attachKeyboardControls} from "./game/input";
+import {DEFAULT_OPTIONS, openNameModal, type OpenNameModalOptions} from "./ui/nameModal";
 
 type ViewName = "game" | "leaderboard";
 
@@ -191,6 +192,7 @@ function showView(view: ViewName) {
 
     if (view === "leaderboard") {
         renderLeaderboardView(ui.viewRoot);
+        openNameModal(DEFAULT_OPTIONS).then((result) => console.log(result));
         return;
     }
 }

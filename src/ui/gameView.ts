@@ -17,7 +17,7 @@ export function renderGameView(container : HTMLElement) {
             
             <div id="game-container" class="z-0 aspect-square max-w-lg mx-auto border relative">
                 <div id="konva-mount" class="absolute inset-0"></div>
-                <div id="game-over-container" class="z-50 absolute inset-0 flex flex-col items-center justify-center bg-red/60 text-white text-4xl font-bold hidden">
+                <div id="game-over-container" class="z-50 absolute inset-0 flex flex-col items-center justify-center bg-black/60 text-white text-4xl font-bold hidden">
                     <div class="flex items-center justify-center text-center">Game Over!</div>
                     <div class="text-base mt-2">Press Restart to start over</div>
                 </div>
@@ -25,7 +25,7 @@ export function renderGameView(container : HTMLElement) {
             <aside>
               <div>Score: <span id="hud-score">0</span></div>
               <button id="btn-start">Start</button>
-              <button id="btn-pause">Start</button>
+              <button id="btn-pause">Pause</button>
             </aside>
           </main>
         </div>
