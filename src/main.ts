@@ -192,7 +192,7 @@ function showView(view: ViewName) {
 
     if (view === "leaderboard") {
         renderLeaderboardView(ui.viewRoot);
-        openNameModal(DEFAULT_OPTIONS);
+        openNameModal(DEFAULT_OPTIONS).then((result) => console.log(result));
         return;
     }
 }

@@ -12,17 +12,17 @@ export const DEFAULT_OPTIONS: OpenNameModalOptions = {
 export function openNameModal(options?: OpenNameModalOptions) : Promise<string | null> {
     const opts = { ...DEFAULT_OPTIONS, ...options };
 
-    function validate(raw: string): { ok: true; value: string} | { ok: false; value: string} {
+    function validate(raw: string): { ok: true; value: string} | { ok: false; error: string} {
         const trimmedStr= raw.trim();
         if (!trimmedStr) {
             return {
                 ok : false,
-                value : "Keinen Namen eingegeben!",
+                error : "Gib einen Namen ein",
             }
         } else if (trimmedStr.length > opts.maxLen) {
             return {
                 ok : false,
-                value : "Maximal " + opts.maxLen + " Zeichen",
+                error : "Maximal " + opts.maxLen + " Zeichen",
             }
         } else {
             return {
@@ -68,7 +68,7 @@ export function openNameModal(options?: OpenNameModalOptions) : Promise<string |
         input.type = "text";
         input.placeholder = "Dein Name";
         input.maxLength = opts.maxLen;
-        input.classList.add("mt-4", "w-full", "rounded-lg", "border", "px-3", "py.2", "focus:outline-none", "focus:ring-2");
+        input.classList.add("mt-4", "w-full", "rounded-lg", "border", "px-3", "py-2", "focus:outline-none", "focus:ring-2");
         form.append(input);
 
         const errorEl = document.createElement("p");
@@ -89,16 +89,16 @@ export function openNameModal(options?: OpenNameModalOptions) : Promise<string |
         form.append(wrapper);
 
         const cancelButton = document.createElement("button");
-        cancelButton.textContent = "| Cancel |";
+        cancelButton.textContent = "Cancel";
         cancelButton.type = "button";
-        cancelButton.classList.add("items-center", "justify-center", "text-gray-700");
-        form.append(cancelButton);
+        cancelButton.classList.add("text-gray-700", "mt-2", "ml-2", "px-4", "py-2", "rounded-lg", "border");
+        wrapper.append(cancelButton);
 
         const okButton = document.createElement("button");
         okButton.type = "submit";
-        okButton.textContent = "| OK |";
-        okButton.classList.add("items-center", "justify-center", "bg-black", "text-white", "mt-2", "ml-2");
-        form.append(okButton);
+        okButton.textContent = "OK";
+        okButton.classList.add("items-center", "justify-center", "bg-black", "text-white", "mt-2", "ml-2", "px-4", "py-2", "rounded-lg", "border");
+        wrapper.append(okButton);
 
         const onCancelClick = () => closeAndResolve(null);
 
@@ -114,18 +114,18 @@ export function openNameModal(options?: OpenNameModalOptions) : Promise<string |
             closeAndResolve(null);
         }
 
-        function onSubmit (event:SubmitEvent) : void {
+        function onSubmit (event: Event) : void {
             event.preventDefault();
-
+            clearError();
 
             const result = validate(input.value);
             if (result.ok) {
                 closeAndResolve(result.value);
             } else {
-                showError(result.value);
+                showError(result.error);
                 input.focus();
+                return;
             }
-            clearError();
         }
 
         cancelButton.addEventListener("click", onCancelClick);
