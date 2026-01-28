@@ -15,6 +15,10 @@ export function renderGameView(container : HTMLElement) {
           </header>
           
           <main>
+            <aside>
+                <div>Player: <span id="hud-name"></span></div>  
+                <div>Score: <span id="hud-score">0</span></div>
+            </aside>
             
             <div id="game-container" class="z-0 aspect-square max-w-lg mx-auto border relative">
                 <div id="konva-mount" class="absolute inset-0"></div>
@@ -23,11 +27,9 @@ export function renderGameView(container : HTMLElement) {
                     <div class="text-base mt-2">Press Restart to start over</div>
                 </div>
             </div>
-            <aside>
-                <div>Player: <span id="hud-name"></span></div>  
-                <div>Score: <span id="hud-score">0</span></div>
-                <button id="btn-start">Start</button>
-                <button id="btn-pause">Pause</button>
+            <aside class="flex gap-2 mx-auto max-w-4xl px-4 py-4">
+                <button id="btn-start" class="btn btn-primary">Start</button>
+                <button id="btn-pause" class="btn btn-danger">Pause</button>
             </aside>
           </main>
         </div>
