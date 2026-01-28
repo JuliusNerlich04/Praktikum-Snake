@@ -7,7 +7,8 @@ import {createKonvaRenderer, type KonvaRenderer} from "./game/rendererKonva";
 import {initGameState, type GameState} from "./game/state";
 import {tick} from "./game/engine";
 import {attachKeyboardControls} from "./game/input";
-import {DEFAULT_OPTIONS, openNameModal, type OpenNameModalOptions} from "./ui/nameModal";
+import {openNameModal} from "./ui/nameModal";
+import {addEntry, saveLeaderboard, loadLeaderboard, type LeaderboardEntry} from "./storage/leaderboardStore";
 
 type ViewName = "game" | "leaderboard";
 
@@ -60,9 +61,18 @@ function startLoop() {
                 detachKeyboard();
                 detachKeyboard = null;
             }
+
+            const entry: LeaderboardEntry = {name: playerName ?? "Unknown",
+                score: gameState.score,
+                dateISO: new Date().toISOString()}
+            const leaderboard = loadLeaderboard();
+            const next = addEntry(leaderboard, entry);
+            saveLeaderboard(next);
+
             isRunning = false;
-            isPaused = true;
+            isPaused = false;
             if (currentGameUI) updateControls(currentGameUI);
+
             return;
         }
         renderer.draw(gameState);
