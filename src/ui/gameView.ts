@@ -17,7 +17,7 @@ export function renderGameView(container : HTMLElement) {
           <main class="mx-auto max-w-4xl px-4">
             <div class="max-w-lg mx-auto flex flex-col items-center gap-4">    
                 <div class="w-full flex justify-between rounded-xl border p-3">
-                    <div>Player: <span id="hud-name"></span></div>  
+                    <div>Player: <span id="hud-name" class="cursor-pointer underline decoration dotted hover:text-emerald-400"></span></div>  
                     <div>Score: <span id="hud-score">0</span></div>
                 </div>
                 

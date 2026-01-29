@@ -41,6 +41,25 @@ async function handleStartClick(gameUI: GameViewUI) {
     startGame(gameUI);
 }
 
+async function handleNameClick(gameUI: GameViewUI) {
+    const wasRunning = isRunning;
+    const wasGameOver = gameState?.isGameOver
+    if (wasRunning && !wasGameOver) {
+        pauseGame(gameUI);
+        updateControls(gameUI);
+    }
+    const result = await openNameModal({ maxLen: 16, title: "User Name: ", initialValue: playerName ?? ""});
+    if (result !== null) {
+        playerName = result;
+        updateControls(gameUI);
+    }
+
+    if (wasRunning && !wasGameOver) {
+        resumeGame(gameUI);
+    }
+
+}
+
 function startLoop() {
     console.log("Starting Loop, interval" + TICK_MS + "has State" + gameState + "hasRenderer" + renderer);
 
@@ -191,6 +210,10 @@ function showView(view: ViewName) {
         const gameUI = renderGameView(ui.viewRoot);
         currentGameUI = gameUI;
         console.log("game Container exists", gameUI.konvaMount);
+
+        gameUI.playerEl.addEventListener("click", () => {
+            void handleNameClick(gameUI)
+        })
 
         gameState = initGameState();
 
