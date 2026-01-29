@@ -98,7 +98,7 @@ export function createKonvaRenderer<State extends GameState>(
                     y: offset + segment.y * cellSize,
                     width: cellSize,
                     height: cellSize,
-                    fill: i === 0 ? "rgba(130,255,130,0.7)" : "rgba(130,255,130,0.5)",
+                    fill: i === 0 ? "rgba(16,185,129,0.70)" : "rgba(16,185,129,0.50)",
                 })
             )
         });
@@ -108,7 +108,7 @@ export function createKonvaRenderer<State extends GameState>(
                 x: offset + food.x * cellSize + cellSize / 2,
                 y: offset + food.y * cellSize + cellSize / 2,
                 radius: cellSize * 0.4,
-                fill: "rgba(255,130,130,0.6)",
+                fill: "rgba(239,68,68,0.75)",
             })
         )
 
