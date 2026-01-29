@@ -10,6 +10,7 @@ export function renderLeaderboardView(container : HTMLElement) {
         container.appendChild(p);
         return;
     }
+    const wrapper = document.createElement("div");
     const table = document.createElement("table");
     const thead = document.createElement("thead");
     const thRow = document.createElement("tr");
@@ -22,6 +23,7 @@ export function renderLeaderboardView(container : HTMLElement) {
     const thDatum = document.createElement("th");
     thDatum.textContent = 'Datum'
 
+    wrapper.classList.add("max-w-lg", "mx-auto", "px-4");
     table.classList.add("w-full", "border-collapse")
     thRow.classList.add("border-b")
     thRang.classList.add("p-2", "text-left", "font-semibold");
@@ -59,6 +61,6 @@ export function renderLeaderboardView(container : HTMLElement) {
         tbody.append(trRow);
     }
     table.append(tbody);
-
-    container.append(table);
+    wrapper.append(table);
+    container.append(wrapper);
 }
