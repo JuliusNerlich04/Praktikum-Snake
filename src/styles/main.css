@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    .btn {
+        @apply px-4 py-2 rounded-lg font-semibold transition;
+    }
+    .btn-primary {
+        @apply bg-emerald-500 text-white;
+    }
+    .btn-secondary {
+        @apply bg-gray-200 text-gray-900;
+    }
+    .btn-danger {
+        @apply bg-red-500 text-white;
+    }
+}
+

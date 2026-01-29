@@ -14,21 +14,25 @@ export function renderGameView(container : HTMLElement) {
           <header>
           </header>
           
-          <main>
-            
-            <div id="game-container" class="z-0 aspect-square max-w-lg mx-auto border relative">
-                <div id="konva-mount" class="absolute inset-0"></div>
-                <div id="game-over-container" class="z-50 absolute inset-0 flex flex-col items-center justify-center bg-black/60 text-white text-4xl font-bold hidden">
-                    <div class="flex items-center justify-center text-center">Game Over!</div>
-                    <div class="text-base mt-2">Press Restart to start over</div>
+          <main class="mx-auto max-w-4xl px-4">
+            <div class="max-w-lg mx-auto flex flex-col items-center gap-4">    
+                <div class="w-full flex justify-between rounded-xl border p-3">
+                    <div>Player: <span id="hud-name"></span></div>  
+                    <div>Score: <span id="hud-score">0</span></div>
+                </div>
+                
+                <div id="game-container" class="w-full z-0 aspect-square border relative">
+                    <div id="konva-mount" class="absolute inset-0"></div>
+                    <div id="game-over-container" class="z-50 absolute inset-0 flex flex-col items-center justify-center bg-black/60 text-white text-4xl font-bold hidden">
+                        <div class="flex items-center justify-center text-center">Game Over!</div>
+                        <div class="text-base mt-2">Press Restart to start over</div>
+                    </div>
+                </div>
+                <div class="flex justify-center gap-3">
+                    <button id="btn-start" class="btn btn-primary">Start</button>
+                    <button id="btn-pause" class="btn btn-danger">Pause</button>
                 </div>
             </div>
-            <aside>
-                <div>Player: <span id="hud-name"></span></div>  
-                <div>Score: <span id="hud-score">0</span></div>
-                <button id="btn-start">Start</button>
-                <button id="btn-pause">Pause</button>
-            </aside>
           </main>
         </div>
     `;
