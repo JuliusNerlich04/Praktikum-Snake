@@ -7,8 +7,8 @@ import {createKonvaRenderer, type KonvaRenderer} from "./game/rendererKonva";
 import {initGameState, type GameState} from "./game/state";
 import {tick} from "./game/engine";
 import {attachKeyboardControls} from "./game/input";
-import {openNameModal} from "./ui/nameModal";
-import {addEntry, saveLeaderboard, loadLeaderboard, type LeaderboardEntry} from "./storage/leaderboardStore";
+import {DEFAULT_OPTIONS, openNameModal, type OpenNameModalOptions} from "./ui/nameModal";
+import {addEntry, type LeaderboardEntry, loadLeaderboard, saveLeaderboard} from "./storage/leaderboardStore";
 import {attachGameHotkeys} from "./game/hotkeys";
 
 type ViewName = "game" | "leaderboard";
@@ -129,7 +129,8 @@ function startGame(gameUI: GameViewUI) {
 
     detachKeyboard = attachKeyboardControls((dir) => {
         if (!gameState) return;
-        gameState = { ...gameState, pendingDirection: dir };
+        gameState.pendingDirections = gameState.pendingDirections ?? [];
+        gameState.pendingDirections.push(dir);
     });
 
     isPaused = false;
@@ -160,20 +161,17 @@ function resumeGame(gameUI: GameViewUI) {
 }
 
 function updateControls(gameUI: GameViewUI) {
-    console.log("update controls");
-    if (gameState?.isGameOver === true){
+    if (gameState?.isGameOver === true) {
         gameUI.pauseButton.classList.add("hidden");
         gameUI.startButton.textContent = "Restart";
         gameUI.startButton.disabled = false;
         gameUI.gameOverContainer.classList.remove("hidden");
-        console.log("Game Over");
     } else {
         gameUI.pauseButton.classList.remove("hidden");
         gameUI.gameOverContainer.classList.add("hidden");
         gameUI.startButton.textContent = "Start";
         gameUI.startButton.disabled = isRunning;
         gameUI.pauseButton.textContent = isPaused ? "Resume" : "Pause";
-        console.log("Game not Over");
     }
 
     const score = gameState?.score ?? 0;
@@ -218,7 +216,6 @@ function showView(view: ViewName) {
     if (view === "game") {
         const gameUI = renderGameView(ui.viewRoot);
         currentGameUI = gameUI;
-        console.log("game Container exists", gameUI.konvaMount);
 
         gameUI.playerEl.addEventListener("click", () => {
             void handleNameClick(gameUI)
@@ -245,14 +242,12 @@ function showView(view: ViewName) {
 
         renderer?.destroy();
         renderer = createKonvaRenderer<GameState>(gameUI.konvaMount);
-        console.log("renderer Created");
         renderer.drawGrid(gameState);
         renderer.draw(gameState);
-        console.log("draw game");
 
         gameUI.startButton.addEventListener("click", () => {
-                void handleStartClick(gameUI);
-            });
+            void handleStartClick(gameUI);
+        });
         gameUI.pauseButton.addEventListener("click", () => {
             if (isRunning) pauseGame(gameUI);
             else resumeGame(gameUI)

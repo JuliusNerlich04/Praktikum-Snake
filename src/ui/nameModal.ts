@@ -9,25 +9,25 @@ export const DEFAULT_OPTIONS: OpenNameModalOptions = {
     title: "User Name:",
 }
 
-export function openNameModal(options?: OpenNameModalOptions) : Promise<string | null> {
+export function openNameModal(options?: OpenNameModalOptions): Promise<string | null> {
     const opts = { ...DEFAULT_OPTIONS, ...options };
 
-    function validate(raw: string): { ok: true; value: string} | { ok: false; error: string} {
-        const trimmedStr= raw.trim();
+    function validate(raw: string): { ok: true; value: string } | { ok: false; error: string } {
+        const trimmedStr = raw.trim();
         if (!trimmedStr) {
             return {
-                ok : false,
-                error : "Gib einen Namen ein",
+                ok: false,
+                error: "Gib einen Namen ein",
             }
         } else if (trimmedStr.length > opts.maxLen) {
             return {
-                ok : false,
-                error : "Maximal " + opts.maxLen + " Zeichen",
+                ok: false,
+                error: "Maximal " + opts.maxLen + " Zeichen",
             }
         } else {
             return {
-                ok : true,
-                value : trimmedStr,
+                ok: true,
+                value: trimmedStr,
             }
         }
     }
@@ -40,7 +40,7 @@ export function openNameModal(options?: OpenNameModalOptions) : Promise<string |
         backdrop.classList.add("fixed", "inset-0", "bg-black/50", "flex", "items-center", "justify-center", "p-4", "z-50");
         document.body.append(backdrop);
 
-        function closeAndResolve(value: string | null)  {
+        function closeAndResolve(value: string | null) {
             if (closed) return;
             closed = true;
 
@@ -61,7 +61,7 @@ export function openNameModal(options?: OpenNameModalOptions) : Promise<string |
         card.append(form);
 
         const title = document.createElement("h1");
-        title.innerText = opts.title?? "Name eingeben";
+        title.innerText = opts.title ?? "Name eingeben";
         title.classList.add("text-xl", "font-semibold");
         form.append(title);
 
@@ -116,7 +116,7 @@ export function openNameModal(options?: OpenNameModalOptions) : Promise<string |
             closeAndResolve(null);
         }
 
-        function onSubmit (event: Event) : void {
+        function onSubmit(event: Event): void {
             event.preventDefault();
             clearError();
 
