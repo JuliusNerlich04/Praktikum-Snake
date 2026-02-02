@@ -9,6 +9,7 @@ import {tick} from "./game/engine";
 import {attachKeyboardControls} from "./game/input";
 import {openNameModal} from "./ui/nameModal";
 import {addEntry, saveLeaderboard, loadLeaderboard, type LeaderboardEntry} from "./storage/leaderboardStore";
+import {attachGameHotkeys} from "./game/hotkeys";
 
 type ViewName = "game" | "leaderboard";
 
@@ -26,6 +27,7 @@ let renderer: KonvaRenderer<GameState> | null = null;
 let detachKeyboard: null | (() => void);
 let currentGameUI: GameViewUI | null = null;
 let playerName: string | null = null;
+let detachHotkeys: null | (() => void) = null;
 
 const TICK_MS = 150;
 
@@ -110,6 +112,8 @@ function stopLoop() {
 function startGame(gameUI: GameViewUI) {
     stopLoop();
 
+    if (isRunning) return;
+
     if (detachKeyboard) {
         detachKeyboard();
         detachKeyboard = null;
@@ -187,6 +191,11 @@ function cleanupCurrentView() {
         detachKeyboard = null;
     }
 
+    if (detachHotkeys) {
+        detachHotkeys();
+        detachHotkeys = null;
+    }
+
     renderer?.destroy();
     renderer = null;
 
@@ -214,6 +223,23 @@ function showView(view: ViewName) {
         gameUI.playerEl.addEventListener("click", () => {
             void handleNameClick(gameUI)
         })
+
+        detachHotkeys = attachGameHotkeys({
+            isModalOpen: () => document.querySelector('[dada-modal="name"]') !== null,
+            isRunning: () => isRunning,
+            isPaused: () => isPaused,
+            isGameOver: () => gameState?.isGameOver === true,
+
+            onTogglePause: () => {
+                if(isRunning) pauseGame(gameUI);
+                else if (isPaused) resumeGame(gameUI);
+            },
+
+            onStartOrRestart: () => {
+                void handleStartClick(gameUI);
+            }
+        });
+
 
         gameState = initGameState();
 

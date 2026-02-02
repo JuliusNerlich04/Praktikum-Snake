@@ -36,6 +36,7 @@ export function openNameModal(options?: OpenNameModalOptions) : Promise<string |
         let closed = false;
 
         const backdrop = document.createElement("div");
+        backdrop.dataset.modal = "name";
         backdrop.classList.add("fixed", "inset-0", "bg-black/50", "flex", "items-center", "justify-center", "p-4", "z-50");
         document.body.append(backdrop);
 
@@ -69,6 +70,7 @@ export function openNameModal(options?: OpenNameModalOptions) : Promise<string |
         input.placeholder = "Dein Name";
         input.maxLength = opts.maxLen;
         input.classList.add("mt-4", "w-full", "rounded-lg", "border", "px-3", "py-2", "focus:outline-none", "focus:ring-2");
+        input.value = opts.initialValue ?? "";
         form.append(input);
 
         const errorEl = document.createElement("p");
