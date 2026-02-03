@@ -1,4 +1,4 @@
-import type {Direction, GameState} from "./state"
+import type {Direction, Point, GameState} from "./state"
 import {spawnFood} from "./food";
 import {pointsEqual} from "./helpers";
 import {checkCollision} from "./collision";
@@ -13,7 +13,7 @@ function isOpposite (a: Direction, b: Direction): boolean {
     );
 }
 
-function nextHead (head: {x: number, y:number}, dir: Direction) {
+function nextHead (head: Point, dir: Direction) {
     switch (dir) {
         case "left":
             return{
