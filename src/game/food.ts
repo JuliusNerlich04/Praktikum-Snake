@@ -1,7 +1,7 @@
 import type {GameState, Point} from "./state";
 import {isPointOnSnake} from "./helpers"
 
-function randomValidPoint (state: GameState): Point {
+function randomValidPoint (state: Pick<GameState, "gridSize" | "snake">): Point {
     let point: Point;
     point = {x: Math.floor(Math.random() * state.gridSize), y: Math.floor(Math.random() * state.gridSize)}
     while (isPointOnSnake(point, state.snake)) {
@@ -10,7 +10,6 @@ function randomValidPoint (state: GameState): Point {
     return point;
 }
 
-export function spawnFood (state: GameState): Point{
-    const location= randomValidPoint(state);
-    return location;
+export function spawnFood (state: Pick<GameState, "gridSize" | "snake">): Point{
+    return randomValidPoint(state);
 }
