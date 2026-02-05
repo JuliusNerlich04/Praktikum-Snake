@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git@ssh.gitlab.finatix.de:j.nerlich/praktikumsprojekt-julius.git"
   },
-  "license": "ISC",
+  "license": "MIT",
   "author": "Julius Nerlich",
   "type": "module",
   "main": "index.js",
