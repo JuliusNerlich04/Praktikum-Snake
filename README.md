@@ -1,51 +1,75 @@
-# Praktikumsprojekt Julius
-## Snake Spiel
-### Spielablauf und Regeln
-1. Futter einsammeln
+# Praktikumsprojekt Julius – Snake SPA
 
-    Trifft der Kopf der Schlange auf ein Futterfeld, wird das Futter gefressen:
+Ein Single-Page-Application (SPA) Snake-Spiel. Ziel ist es, möglichst viele Punkte zu sammeln und in der Bestenliste oben zu stehen.
 
-   - Die Schlange wächst (um 1 Feld).
+---
 
-   - Du bekommst Punkte (pro Futter ein Punkt).
+## Demo
+- Live-Demo: _tbd_
+- Screenshots/GIF: _tbd_
 
-   - Neues Futter erscheint an einer freien Stelle.
+---
 
-2. Verbotene Bewegungen:
-   - Du darfst nicht direkt um 180° drehen (z. B. von links sofort nach rechts), weil du sonst in dich selbst laufen würdest.
+## Features
+- Klassisches Snake-Gameplay (Wachstum, Punkte)
+- Kontinuierliche Bewegung der Schlange
+- Steuerung über Pfeiltasten oder WASD
+- Bestenliste (je nach Implementierung)
 
-3. Game Over (Spielende):
-Das Spiel endet, wenn …
+---
 
-   - die Schlange gegen eine Wand stößt, oder
+## Spielablauf und Regeln
 
-   - die Schlange in ihren eigenen Körper fährt.
+1. **Futter einsammeln**  
+   Trifft der Kopf der Schlange auf ein Futterfeld, wird das Futter gefressen:
+    - Die Schlange wächst (um **1 Feld**).
+    - Du bekommst Punkte (pro Futter **1 Punkt**).
+    - Neues Futter erscheint an einer **freien** Stelle.
 
-4. Gewinnen:
+2. **Verbotene Bewegungen**
+    - Du darfst nicht direkt um **180°** drehen (z. B. von links sofort nach rechts), weil du sonst in dich selbst laufen würdest.
 
-   - es gibt kein "klassisches Gewinnen" - du spielst bis du gewinnst und versuchst ganz oben auf der Bestenliste zu stehen
+3. **Game Over (Spielende)**  
+   Das Spiel endet, wenn …
+    - die Schlange gegen eine **Wand** stößt, oder
+    - die Schlange in ihren **eigenen Körper** fährt.
 
-### Steuerung
+4. **Gewinnen**
+    - Es gibt kein „klassisches Gewinnen“ – du spielst so lange wie möglich und versuchst, ganz oben auf der Bestenliste zu stehen.
 
-- die Schlange bewegt sich ständig weiter
-- Richtungsänderungen können durch die Pfeiltasten oder WASD vorgenommen werden
+---
 
-### Starten des Spiels
+## Controls
 
-1. Terminal öffnen
-2. Spiel Speichern
-3. zum Spiel navigieren
-4. Terminal:`npm install`
-5. Terminal: `npm run dev`
-6. Link öffnen und spielen
+| Aktion                | Tastatur      |
+|-----------------------|---------------|
+| Richtung ändern       | Pfeiltasten / WASD |
+| Pause/Resume | Leertaste     |
+| Start/Restart         | Leertaste              |
 
-### Known Bugs
+> Hinweis: Die Schlange bewegt sich ständig weiter; Eingaben ändern nur die Richtung.
 
-- während das Spiel pausiert ist, kann die Richtung geändert werden
+---
 
-### Planned Features
+## Tech Stack
+- TypeScript, Vite
+- Konva
+- Tailwind
 
-- ein Warp-modus, hier soll die Schlange, wenn sie mit der Wand kollidieren würde,
-auf der gegenüber liegenden Seite in das Spielfeld laufen
-- Bestenliste reset feature oder Unterauswahl in tages-/ monatsaktuell und Gesamt
+---
+
+## Getting Started
+
+### Voraussetzungen
+- Node.js
+- npm
+
+### Installation
+```bash
+# Repository lokal speichern
+git clone https://github.com/JuliusNerlich04/Praktikum-Snake
+cd <repo>
+
+npm install
+
  
