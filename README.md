@@ -72,4 +72,15 @@ cd <repo>
 
 npm install
 
+<<<<<<< HEAD
  
+=======
+- ein Warp-modus, hier soll die Schlange, wenn sie mit der Wand kollidieren würde,
+auf der gegenüber liegenden Seite in das Spielfeld laufen
+- Bestenliste reset feature oder Unterauswahl in tages-/ monatsaktuell und Gesamt
+
+### Run with Docker Container
+
+- `docker build -t snake .`
+- `docker run --network host --name snake -p 5173:5173 snake`
+>>>>>>> 71d25ba (docker availability made)
