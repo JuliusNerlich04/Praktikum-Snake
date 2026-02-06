@@ -36,7 +36,7 @@ Das Spiel endet, wenn …
 2. Spiel Speichern
 3. zum Spiel navigieren
 4. Terminal:`npm install`
-5. Terminal:`npm run dev`
+5. Terminal: `npm run dev`
 6. Link öffnen und spielen
 
 ### Known Bugs
