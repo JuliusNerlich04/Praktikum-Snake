@@ -41,11 +41,11 @@ Ein Single-Page-Application (SPA) Snake-Spiel. Ziel ist es, möglichst viele Pun
 
 ## Controls
 
-| Aktion                | Tastatur      |
-|-----------------------|---------------|
+| Aktion                | Tastatur           |
+|-----------------------|--------------------|
 | Richtung ändern       | Pfeiltasten / WASD |
-| Pause/Resume | Leertaste     |
-| Start/Restart         | Leertaste              |
+| Pause/Resume | Leertaste          |
+| Start/Restart         | Enter              |
 
 > Hinweis: Die Schlange bewegt sich ständig weiter; Eingaben ändern nur die Richtung.
 
@@ -71,16 +71,11 @@ git clone https://github.com/JuliusNerlich04/Praktikum-Snake
 cd <repo>
 
 npm install
+npm run dev
 
-<<<<<<< HEAD
  
-=======
-- ein Warp-modus, hier soll die Schlange, wenn sie mit der Wand kollidieren würde,
-auf der gegenüber liegenden Seite in das Spielfeld laufen
-- Bestenliste reset feature oder Unterauswahl in tages-/ monatsaktuell und Gesamt
-
 ### Run with Docker Container
 
 - `docker build -t snake .`
 - `docker run --network host --name snake -p 5173:5173 snake`
->>>>>>> 71d25ba (docker availability made)
+
