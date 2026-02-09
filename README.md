@@ -73,7 +73,9 @@ cd <repo>
 npm install
 npm run dev
 
+ 
 ### Run with Docker Container
 
 - `docker build -t snake .`
 - `docker run --network host --name snake -p 5173:5173 snake`
+
